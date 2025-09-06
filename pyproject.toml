@@ -1,0 +1,311 @@
+## pyproject.toml -*- mode: Toml -*-
+
+## https://packaging.python.org/en/latest/
+## https://packaging.python.org/en/latest/specifications/pyproject-toml/
+[project]
+name            = "sphinx_timeline_domain"
+version         = "0.1.0"
+description     = ""
+readme          = "README.md"
+requires-python = ">=3.12"
+license         = {file = "LICENSE"}
+keywords        = []
+authors         = [
+  {email = "jgrey4296@gmail.com", name  = "J Grey"}
+]
+classifiers     = [
+  "Programming Language :: Python"
+]
+
+##-- dependencies
+dependencies   = [
+    "jgdv >= 0.3.2",
+    "pyparsing>=3.2.3",
+]
+
+##-- end dependencies
+
+##-- urls
+[project.urls]
+homepage      = "https://github.com/jgrey4296/"
+documentation = "https://.readthedocs.io/en/latest/"
+repository    = "https://github.com/jgrey4296/"
+changelog     = "https://github.com/jgrey4296//spam/blob/master/CHANGELOG.md"
+
+##-- end urls
+
+##-- entry points
+[project.scripts] # CLI
+#  = .default:main
+
+[project.gui-scripts] #GUI
+# spam-gui      = "spam:main_gui"
+
+[project.entry-points."nothing"] # Plugins
+# tomatoes      = "spam:main_tomatoes"
+
+##-- end entry points
+
+##-- build-system
+[build-system]
+requires       = ["hatchling>=1.13"]
+build-backend  = "hatchling.build"
+
+[tool.hatch.build]
+skip-excluded-dirs  = true
+# directory           = ".temp/build"  # or HATCH_BUILD_LOCATION
+
+[tool.hatch.build.targets.sdist]
+packages   = ["src/sphinx_timeline_domain"]
+artifacts  = ["*.so"]
+exclude    = [
+    ".temp", "**.rst",
+    "src/sphinx_timeline_domain/*/__tests",
+    "src/sphinx_timeline_domain/_docs",
+    "src/sphinx_timeline_domain/__tests",
+]
+
+[tool.hatch.build.targets.wheel]
+packages   = ["src/sphinx_timeline_domain"]
+artifacts  = ["*.so"]
+exclude    = [
+    ".temp", "**.rst",
+    "src/sphinx_timeline_domain/*/__tests",
+    "src/sphinx_timeline_domain/__tests",
+    "src/sphinx_timeline_domain/_docs",
+]
+
+##-- end build-system
+
+
+# Tools #######################################################################
+
+##-- bumpver
+[tool.bumpver]
+current_version    = "0.1.0"
+version_pattern    = "MAJOR.MINOR.PATCH"
+commit_message     = "[bump]: version {old_version} -> {new_version}"
+tag_message        = "{new_version}"
+tag_scope          = "default"
+commit             = true
+tag                = true
+# pre_commit_hook  = ""
+# post_commit_hook = ""
+# push             = false
+
+[tool.bumpver.file_patterns]
+"pyproject.toml"   = [
+                   '^version\s+=\s+"{version}"',
+                   '^current_version\s+=\s+"{version}"'
+]
+"/__init__.py" = ['^__version__\s+:\s+Final\[str\]\s+=\s+"{version}"']
+"docs/conf.py"   = ["^release = '{version}'"]
+"README.md"      = ["^Version : {version}  "]
+
+##-- end bumpver
+
+##-- mypy
+# https://mypy.readthedocs.io/en/stable/config_file.html
+  [tool.mypy]
+strict                  = false
+python_version          = "3.12"
+python_executable       = ".venv/bin/python"
+cache_dir               = "~/_cache_/mypy"
+incremental             = true
+follow_imports          = "silent"
+follow_untyped_imports  = true
+ignore_missing_imports  = false
+enable_error_code       = [
+    "explicit-override", "ignore-without-code",
+    "possibly-undefined", "unreachable",
+    "type-arg",
+    ]
+disable_error_code   = []
+
+warn_return_any      = true
+warn_unused_configs  = true
+
+# Per-module options:
+# [[tool.mypy.overrides]]
+# module             = "blah"
+# disallow_untyped_defs = true
+
+##-- end mypy
+
+##-- isort
+# https://pycqa.github.io/isort/docs/configuration/config_files.html
+[tool.isort]
+color_output           = false
+py_version             = 312
+# profile                = "black"
+comment_prefix         = "# "
+sections               = [
+"FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"
+]
+default_section        = "THIRDPARTY"
+lines_after_imports    = -1
+lines_between_sections = 1
+lines_between_types    = 0
+
+add_imports            = [
+"from __future__ import annotations",
+"import abc",
+"import datetime",
+"import enum",
+"import functools as ftz",
+"import itertools as itz",
+"import logging as logmod",
+"import pathlib as pl",
+"import re",
+"import types",
+"import contextlib",
+"import hashlib",
+"import typing",
+"from collections import defaultdict, ChainMap",
+"from time import sleep",
+"from copy import deepcopy",
+"from dataclasses import InitVar, dataclass, field",
+"from uuid import UUID, uuid1",
+"from weakref import ref",
+"from typing import (TYPE_CHECKING, Any, Callable, ClassVar, Final, Generic, Iterable, Iterator, Mapping, Match, MutableMapping, Protocol, Sequence, Tuple, TypeAlias, TypeGuard, TypeVar, cast, final, Self, overload, runtime_checkable, Generator)",
+"import atexit # for @atexit.register",
+"import faulthandler",
+]
+
+import_heading_future      = "Imports:"
+import_heading_stdlib      = "##-- stdlib imports"
+import_heading_thirdparty  = "##-- 3rd party imports"
+import_heading_firstparty  = "##-- 1st party imports"
+import_heading_localfolder = ""
+
+import_footer_future      = ""
+import_footer_stdlib      = "##-- end stdlib imports"
+import_footer_thirdparty  = "##-- end 3rd party imports"
+import_footer_firstparty  = "##-- end 1st party imports"
+import_footer_localfolder = ""
+
+[tool.isort.import_headings]
+# Currently Doesn't work
+FUTURE      = "## Imports:"
+STDLIB      = "##-- stdlib imports"
+THIRDPARTY  = "##-- 3rd party imports"
+FIRSTPARTY  = "##-- 1st party imports"
+LOCALFOLDER = ""
+
+[tool.isort.import_footers]
+# Currently Doesn't work
+FUTURE      = ""
+STDLIB      = "##-- end stdlib imports"
+THIRDPARTY  = "##-- end 3rd party imports"
+FIRSTPARTY  = "##-- end 1st party imports"
+LOCALFOLDER = "## End of Imports "
+
+##-- end isort
+
+##-- pytest
+# https://docs.pytest.org/en/stable/reference/reference.html#ini-options-ref
+[tool.pytest.ini_options]
+addopts          = [
+  # "--cov=",
+  "--ignore-glob=related_/*"
+]
+cache_dir       = ".temp/pytest_cache"
+log_file        = ".temp/logs/pytest.log"
+
+log_cli         = false
+log_level       = "DEBUG"
+log_cli_level   = "INFO"
+log_format      = "%(levelname)s %(name)s : %(message)s"
+log_file_level  = "DEBUG"
+log_file_format = "%(asctime)s %(levelname)s %(name)s : %(message)s"
+##-- end pytest
+
+##-- coverage
+# https://pytest-cov.readthedocs.io/en/latest/config.html
+# add "addopts = '--cov-report xml --cov={}' " for pytest
+[tool.coverage.run]
+branch           = true # measure branch coverage
+# command_line   = "..."
+cover_pylib      = false # measure stdlib
+data_file        = ".temp/coverage/coverage_cache" # cache
+disable_warnings = []
+source           = [] # packages or dirs to measure
+include          = [] # files to measure. ignored if source is set.
+omit             = [] # files to not measure
+relative_files   = false #
+timid            = false # simpler but slower tracing
+
+[tool.coverage.paths] # specify equivalent paths
+# source = [] # will error if left empty
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_also = [
+    # Don't complain about missing debug-only code:
+    "def __repr__",
+    "if self\\.debug",
+
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if False:",
+    "if __name__ == .__main__.:",
+
+    # Don't complain about abstract methods, they aren't run:
+    "@(abc\\.)?abstractmethod",
+    ]
+
+ignore_errors = true
+# fail_under  = 20 # coverage percentage
+format        = "text" # or "markdown", "total"
+show_missing  = false # for in the report
+skip_empty    = false # skip files like __init__.py
+
+[tool.coverage.html]
+directory = ".temp/coverage/html_report" # where to write output
+
+[tool.coverage.xml]
+output    = ".temp/coverage/coverage.xml" # where to write output
+
+[tool.coverage.json]
+output    = ".temp/coverage/coverage.json" # where to write output
+pretty_print = true
+##-- end coverage
+
+##-- uv
+# https://docs.astral.sh/uv/concepts/configuration-files/
+[tool.uv]
+package                    = true
+build-backend.module-root  = "src"
+
+[dependency-groups]
+dev = [
+    "ipython>=9.4.0",
+    "towncrier>=24.8.0",
+    "ipython>=9.4.0",
+    "mypy>=1.17.1",
+    "sh>=2.2.2",
+]
+test =[
+    "pydot>=4.0.1",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "tox>=4.28.4",
+    "tox-uv>=1.27.0",
+    "ruff>=0.12.8",
+]
+docs = [
+    "myst-parser>=4.0.1",
+    "sphinx>=8.2.3",
+    "sphinx-autoapi>=3.6.0",
+    "sphinx-rtd-theme>=3.0.2",
+    "pydot>=4.0.1",
+    "tox>=4.28.4",
+    "tox-uv>=1.27.0",
+]
+
+##-- end uv

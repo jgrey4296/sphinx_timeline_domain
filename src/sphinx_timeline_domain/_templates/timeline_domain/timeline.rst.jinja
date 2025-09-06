@@ -1,0 +1,10 @@
+{# Jinja Template for timeline -> rst export -#}
+
+.. timeline:timeline:: {{ key }}
+{% for key,val in entry %}
+  {% if key == "event" %}
+    {{ (val.year ~ val.title ~ val.loc ~ val.people ~ val.tags ~ val.extra) }}
+  {% elif key == "period" %}
+    {{ (val.start ~ "->" ~ val.end ~ val.title ~ val.loc ~ val.people ~ val.tags ~ val.extra) }}
+  {%   endif %}
+{% endfor %}
