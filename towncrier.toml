@@ -1,0 +1,13 @@
+# towncrier.toml -*- mode: toml-mode -*-
+# Summary:
+#
+# Tags:
+#
+## https://towncrier.readthedocs.io/en/stable/configuration.html
+[tool.towncrier]
+name       = "sphinx_timeline_domain"
+version    = "0.1.0"
+directory  = "sphinx_timeline_domain/_docs/_changes"
+filename   = "CHANGELOG.md"
+template   = "sphinx_timeline_domain/_docs/_templates/news.md"
+create_add_extension = true
